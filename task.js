@@ -28,7 +28,58 @@
  * @return {'up' | 'down' | 'left' | 'right'} направление, в которое надо пойти пакману
  */
 function pacmanDirectionHandler(entities, maze) {
+    let positionFood = findFood(maze, entities[0].position, entities)
+    let direction = getDirectionToFood(maze, entities[0].position, positionFood)
+    return direction;
+}
+
+function findFood(maze, position, entities){
+    const playerX = position.x;
+    const playerY = position.y;
+    for (let i = 1; i < maze.length / 2; i++){
+        for (let x = -1; x < i; x++) {
+            for (let y = -1; y < i; y++) {
+                if (maze[playerY + y][playerX + x] === 'o' && !getStatusFood(entities, {x: playerX + x, y: playerY + y})) {
+                    return {x: playerX + x, y: playerY + y};
+                }
+            }
+        }
+    }
+}
+
+function getStatusFood(entities, position){
+    for (let i = 0; i < entities.length; i++){
+        if (entities[i].position.x === position.x && entities[i].position.y === position.y && entities[i].type === 'pacdot'){
+            return entities[i].taken;
+        }
+    }
+    /*return entities.forEach((entity) =>
+    {
+        if (entity.position === position){
+            return entity.taken;
+        }
+    })*/
+}
+
+function getDirectionToFood(maze, positionPlayer, positionFood){
+    if (positionFood.x > positionPlayer.x){
+        return 'right';
+    }
+    if (positionFood.x < positionPlayer.x){
+        return 'left';
+    }
+    else{
+        if (positionFood.y > positionPlayer.y){
+            return 'down';
+        }
+        if (positionFood.y < positionPlayer.y){
+            return 'up';
+        }
+    }
     return 'right';
 }
+
+
+
 
 export default pacmanDirectionHandler;
