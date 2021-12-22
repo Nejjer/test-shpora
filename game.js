@@ -490,12 +490,12 @@ async function run({
     turnTimeMs = 1e3,
 }) {
     const game = getTestGame(settings, pacmanDirectionHandler, 10);
-    console.clear();
+    //console.clear();
     console.log(game.engine.serialize());
     try {
         for (let i = 0; i < turnLimit; i++) {
             turnTimeMs > 0 && (await sleep(turnTimeMs));
-            console.clear();
+            //console.clear();
             game.update();
             console.log(game.engine.serialize());
             if ('playing' !== game.gameState) break;

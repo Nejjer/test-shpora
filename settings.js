@@ -1999,8 +1999,23 @@ var GAME_SETTINGS = {
         ghosts: [],
     },
     firstTask: {
-        pacman: { position: { x: 0, y: 1 }, initialDirection: 'right' },
-        mazeArray: [['XXXXXXXXXXXXXXXX'], ['       ooooooo  '], ['XXXXXXXXXXXXXXXX']],
+        pacman: { position: { x: 5, y: 2 }, initialDirection: 'right' },
+        mazeArray: [
+            ['XXXXXXXXXXXXXXXX'],
+            ['oooo   ooooooo  '],
+            ['oooo   ooooooo  '],
+            ['oooo   ooooooo  '],
+            ['XXXXXXXXXXXXXXXX']],
+        ghosts: [],
+    },
+    myTask: {
+        pacman: { position: { x: 2, y: 2 }, initialDirection: 'right' },
+        mazeArray: [
+            ['XXXXXXXXXXXXXXXX'],
+            ['                '],
+            ['oooooooo      o '],
+            ['       o      oo'],
+            ['XXXXXXXXXXXXXXXX']],
         ghosts: [],
     },
     secondTask: getRandomItem(secondLevel),

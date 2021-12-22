@@ -27,16 +27,117 @@
  * - ' ' — свободное пространство в лабиринте
  * @return {'up' | 'down' | 'left' | 'right'} направление, в которое надо пойти пакману
  */
-function pacmanDirectionHandler(entities, maze) {
-    let positionFood = findFood(maze, entities[0].position, entities)
-    let direction = getDirectionToFood(maze, entities[0].position, positionFood)
-    return direction;
+
+const Direction = {
+    Right: 'right',
+    Left: 'left',
+    Down: 'down',
+    Up: 'up',
 }
+
+let firstCall = true;
+let stepByStepPath = [];
+let order = 0;
+let mapEntities = [[]];
+
+function pacmanDirectionHandler(entities, maze) {
+    let pacman = entities[0];
+    if (firstCall){
+        initEntitiesMap(entities, maze.length)
+    }
+    //let positionFood = findFood(maze, pacman.position, entities);
+    //let neighod = getNeighbors(maze, pacman.position);
+    //let food = getPathToFood(maze, pacman.position);
+    let dir;
+    if (stepByStepPath.length !== 0){
+        dir = makeStep(maze, pacman.position);
+        return dir;
+    }else{
+        stepByStepPath = getPathToFood(maze, pacman.position, entities);
+        dir = makeStep(maze, pacman.position);
+        return dir;
+    }
+}
+
+function initEntitiesMap(entities, heightMaze){
+    let map = new Array(heightMaze)
+    for (let i = 0; i < map.length; i++){
+        map[i] = [];
+    }
+    entities.forEach(entity => {
+        map[entity.position.y][entity.position.x] = entity;
+    })
+    mapEntities = map;
+}
+
+function makeStep(maze, pacmanPosition){
+    let ll = getDirectionToFood(maze, pacmanPosition, stepByStepPath.pop());
+    return ll;
+}
+
+function getNeighbors(maze, position){
+    const neighbor = [];
+    for (let x = -1; x < 2; x++){
+        if (maze[position.y][position.x + x] !== 'X'){ //maze[position.y][position.x + x] === 'o' || maze[position.y][position.x + x] === ' '
+            neighbor.push({x: position.x + x, y: position.y});
+        }
+    }
+    for (let y = -1; y < 2; y++){
+        if (maze[position.y + y][position.x] !== 'X'){  //maze[position.y + y][position.x] === 'o' || maze[position.y + y][position.x] === ' '
+            neighbor.push({x: position.x, y: position.y + y});
+        }
+    }
+    return neighbor.slice();
+}
+
+function getPathToFood(maze, playerPosition, entities){
+    let frontier = [];
+    frontier.push(playerPosition);
+    let came_from = new Map();
+    came_from.set(playerPosition, null);
+
+    while (frontier.length !== 0){
+        let current = frontier.shift();
+        if (mapEntities[current.y][current.x] && mapEntities[current.y][current.x].type === 'pacdot' && !mapEntities[current.y][current.x].taken)
+        {
+            if (current.x !== playerPosition.x || current.y !== playerPosition.y){
+                came_from.set('goat', current)
+                break;
+            }
+        }
+
+        for (let next of getNeighbors(maze, current)){
+            if (!came_from.has(next)){
+                frontier.push(next);
+                came_from.set(next, current);
+            }
+        }
+    }
+    let lll = getStepByStep(came_from);
+    return lll;
+}
+
+function getStepByStep(came_from){
+    let stepByStep = [];
+    stepByStep.push(came_from.get('goat'));
+    while (true){
+        if (came_from.get(stepByStep[stepByStep.length - 1]) == null){
+            stepByStep.pop();
+            break;
+        }
+        stepByStep.push(came_from.get(stepByStep[stepByStep.length - 1]))
+    }
+    return stepByStep;
+}
+
+
+
+
 
 function findFood(maze, position, entities){
     const playerX = position.x;
     const playerY = position.y;
-    for (let i = 1; i < maze.length / 2; i++){
+    for (let i = 1; i < maze.length; i++){
         for (let x = -1; x < i; x++) {
             for (let y = -1; y < i; y++) {
                 if (maze[playerY + y][playerX + x] === 'o' && !getStatusFood(entities, {x: playerX + x, y: playerY + y})) {
@@ -63,20 +164,20 @@ function getStatusFood(entities, position){
 
 function getDirectionToFood(maze, positionPlayer, positionFood){
     if (positionFood.x > positionPlayer.x){
-        return 'right';
+        return Direction.Right;
     }
     if (positionFood.x < positionPlayer.x){
-        return 'left';
+        return Direction.Left;
     }
     else{
         if (positionFood.y > positionPlayer.y){
-            return 'down';
+            return Direction.Down;
         }
         if (positionFood.y < positionPlayer.y){
-            return 'up';
+            return Direction.Up;
         }
     }
-    return 'right';
+    return Direction.Down;
 }
 
 

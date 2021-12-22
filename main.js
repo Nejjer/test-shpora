@@ -7,5 +7,5 @@ run({
     pacmanDirectionHandler,
     showTestOutput: true,
     turnLimit: 1000,
-    turnTimeMs: 1000,
+    turnTimeMs: 100,
 });
