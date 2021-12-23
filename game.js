@@ -490,7 +490,7 @@ async function run({
     turnTimeMs = 1e3,
 }) {
     const game = getTestGame(settings, pacmanDirectionHandler, 10);
-    //console.clear();
+    console.clear();
     console.log(game.engine.serialize());
     try {
         for (let i = 0; i < turnLimit; i++) {

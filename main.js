@@ -5,7 +5,7 @@ import { GAME_SETTINGS } from './settings.js';
 run({
     settings: GAME_SETTINGS.secondTask,
     pacmanDirectionHandler,
-    showTestOutput: true,
+    showTestOutput: false,
     turnLimit: 1000,
-    turnTimeMs: 100,
+    turnTimeMs: 50,
 });

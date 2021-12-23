@@ -2012,9 +2012,9 @@ var GAME_SETTINGS = {
         pacman: { position: { x: 2, y: 2 }, initialDirection: 'right' },
         mazeArray: [
             ['XXXXXXXXXXXXXXXX'],
-            ['                '],
-            ['oooooooo      o '],
-            ['       o      oo'],
+            ['XXXXXXXXXXXXXXXX'],
+            ['   o          oo'],
+            ['XXXXXXXXXXXXXXXX'],
             ['XXXXXXXXXXXXXXXX']],
         ghosts: [],
     },
