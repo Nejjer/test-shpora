@@ -43,8 +43,10 @@ let mapEntities = [[]];
 function pacmanDirectionHandler(entities, maze) {
     let pacman = entities[0];
     if (firstCall){
-        initEntitiesMap(entities, maze.length)
+        initEntitiesMap(maze, entities);
+        firstCall = false;
     }
+    updateEntitiesMap(entities);
     //let positionFood = findFood(maze, pacman.position, entities);
     //let neighod = getNeighbors(maze, pacman.position);
     //let food = getPathToFood(maze, pacman.position);
@@ -59,15 +61,33 @@ function pacmanDirectionHandler(entities, maze) {
     }
 }
 
-function initEntitiesMap(entities, heightMaze){
-    let map = new Array(heightMaze)
+function initEntitiesMap(maze, entities){
+    let map = new Array(maze.length)
+    for (let i = 0; i < map.length; i++){
+        map[i] = [];
+    }
+    mapEntities = map;
+    updateEntitiesMap(entities);
+
+    /*for (let x = 0; x < maze.length; x++){
+        for (let y = 0; y < maze[0].length; y++){
+            mapEntities[x][y] = {};
+        }
+    }*/
+/*    let map = new Array(heightMaze)
     for (let i = 0; i < map.length; i++){
         map[i] = [];
     }
     entities.forEach(entity => {
         map[entity.position.y][entity.position.x] = entity;
     })
-    mapEntities = map;
+    mapEntities = map;*/
+}
+
+function updateEntitiesMap(entities){
+    entities.forEach(entity => {
+        mapEntities[entity.position.y][entity.position.x] = entity;
+    })
 }
 
 function makeStep(maze, pacmanPosition){
@@ -78,12 +98,12 @@ function makeStep(maze, pacmanPosition){
 function getNeighbors(maze, position){
     const neighbor = [];
     for (let x = -1; x < 2; x++){
-        if (maze[position.y][position.x + x] !== 'X'){ //maze[position.y][position.x + x] === 'o' || maze[position.y][position.x + x] === ' '
+        if (maze[position.y][position.x + x] === 'o'){ //maze[position.y][position.x + x] === 'o' || maze[position.y][position.x + x] === ' '
             neighbor.push({x: position.x + x, y: position.y});
         }
     }
     for (let y = -1; y < 2; y++){
-        if (maze[position.y + y][position.x] !== 'X'){  //maze[position.y + y][position.x] === 'o' || maze[position.y + y][position.x] === ' '
+        if (maze[position.y + y][position.x] === 'o'){  //maze[position.y + y][position.x] === 'o' || maze[position.y + y][position.x] === ' '
             neighbor.push({x: position.x, y: position.y + y});
         }
     }
