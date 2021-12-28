@@ -3,9 +3,9 @@ import pacmanDirectionHandler from './task.js';
 import { GAME_SETTINGS } from './settings.js';
 
 run({
-    settings: GAME_SETTINGS.secondTask,
+    settings: GAME_SETTINGS.thirdTask,
     pacmanDirectionHandler,
-    showTestOutput: false,
+    showTestOutput: true,
     turnLimit: 1000,
-    turnTimeMs: 50,
+    turnTimeMs: 0,
 });
